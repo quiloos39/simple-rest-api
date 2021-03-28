@@ -7,7 +7,7 @@
   "scripts": {
     "test": "nodemon src/index.js",
     "start:db": "docker-compose run --service-ports -d",
-    "start": "docker-compose run -d",
+    "start": "docker-compose up -d",
     "stop": "docker-compose down"
   },
   "keywords": [],
