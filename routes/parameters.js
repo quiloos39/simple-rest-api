@@ -40,7 +40,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // Creates product in database.
-// POST x-www-form-urlencoded .../api/products/create, request body: {productID, productDescription, productName}
+// POST x-www-form-urlencoded .../api/products/create, request body: {productDescription, productName}
 router.post("/create/", async (req, res) => {
   mysql.createConnection({
     host: process.env.DATABASE_HOST,
