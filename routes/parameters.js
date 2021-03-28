@@ -1,13 +1,11 @@
 // I didn't implemented futures such as parameter type checking or JSDoc because of time constrains.
-
 const express = require("express")
 const router = express.Router();
 const mysql = require("mysql2/promise");
 
 // Shows all products in database.
 // Ex.: GET .../api/products/
-
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
   mysql.createConnection({
     host: "localhost",
     user: process.env.DATABASE_USER,
@@ -25,8 +23,7 @@ router.get("/", (req, res) => {
 
 // Shows specific product in database.
 // Ex.: GET .../api/parameters/1
-
-router.get("/:id", (req, res) => {
+router.get("/:id", async (req, res) => {
   mysql.createConnection({
     host: process.env.DATABASE_HOST,
     user: process.env.DATABASE_USER,
@@ -43,8 +40,8 @@ router.get("/:id", (req, res) => {
 });
 
 // Creates product in database.
-// POST .../api/products/create, request body: {productID, productDescription, productName}
-router.post("/create/", (req, res) => {
+// POST x-www-form-urlencoded .../api/products/create, request body: {productID, productDescription, productName}
+router.post("/create/", async (req, res) => {
   mysql.createConnection({
     host: process.env.DATABASE_HOST,
     user: process.env.DATABASE_USER,
@@ -61,8 +58,8 @@ router.post("/create/", (req, res) => {
 });
 
 // Updates product in database.
-// POST .../api/products/update request body: {productID, productDescription, productName}
-router.post("/update/", (req, res) => {
+// POST x-www-form-urlencoded .../api/products/update request body: {productID, productDescription, productName}
+router.post("/update/", async (req, res) => {
   mysql.createConnection({
     host: process.env.DATABASE_HOST,
     user: process.env.DATABASE_USER,
@@ -77,6 +74,10 @@ router.post("/update/", (req, res) => {
     res.status(400).send(err);
   })
 });
+
+router.use((req, res, next) => {
+  next();
+})
 
 
 module.exports = router;
