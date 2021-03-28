@@ -6,7 +6,7 @@
   "main": "src/index.js",
   "scripts": {
     "test": "nodemon src/index.js",
-    "start:db": "docker-compose run --service-ports -d",
+    "start:db": "docker-compose run database --service-ports -d",
     "start": "docker-compose up -d",
     "stop": "docker-compose down"
   },
