@@ -1,18 +1,46 @@
 services:
-  db:
+  database:
     image: mysql:latest
-    ports:
-    - 3306:3306
-    container_name: db
+    # Remove comment to access database from local network.
+    # ports:
+    #   - 3306:3306
+    container_name: ${DATABASE_HOST}
     environment:
       - MYSQL_ROOT_PASSWORD=${DATABASE_ROOT_PASSWORD}
     volumes:
-    - ./db:/docker-entrypoint-initdb.d/
+      - ./db:/docker-entrypoint-initdb.d/
+    networks:
+      - backend
+
   phpmyadmin:
     image: phpmyadmin:latest
     ports:
-    - 5500:80
-    #  environment:
-    #    - PMA_HOST = db
-    #    - PMA_USER = ${DATABASE_USER}
-    #    - PMA_PASSWORD = ${DATABASE_PASSWORD}
+      - 5500:80
+    environment:
+      - PMA_HOST=${DATABASE_HOST}
+      - PMA_USER=${DATABASE_USER}
+      - PMA_PASSWORD=${DATABASE_PASSWORD}
+    networks:
+      - backend
+    depends_on:
+      - database
+
+  app:
+    image: node:latest
+    working_dir: /home/node/app
+    user: node
+    volumes:
+      - ./:/home/node/app
+    ports:
+    - 443:8443
+    - 80:8080
+    networks:
+      - backend
+    command: "node ./src/index.js"
+    depends_on:
+      - database
+      - phpmyadmin
+
+networks:
+  backend:
+    driver: bridge
