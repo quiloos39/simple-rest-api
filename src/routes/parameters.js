@@ -7,7 +7,7 @@ const mysql = require("mysql2/promise");
 // Ex.: GET .../api/products/
 router.get("/", async (req, res) => {
   mysql.createConnection({
-    host: "localhost",
+    host: process.env.DATABASE_HOST,
     user: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASSWORD
   }).then(conn => {
