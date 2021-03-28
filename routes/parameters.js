@@ -53,7 +53,7 @@ router.post("/create/", async (req, res) => {
   }).then((status) => {
     res.status(200).send("Successful");
   }).catch(err => {
-    res.status(403).send(err);
+    res.status(400).send(err);
   })
 });
 
@@ -69,7 +69,10 @@ router.post("/update/", async (req, res) => {
     conn.close();
     return result;
   }).then((status) => {
-    res.status(200).send("Successful");
+    if (status[0].affectedRows > 0) {
+      return res.status(200).send("Successful")
+    }
+    throw "Something went wrong"
   }).catch(err => {
     res.status(400).send(err);
   })
