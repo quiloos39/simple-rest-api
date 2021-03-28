@@ -6,7 +6,7 @@ router.use("/api", require("./api"));
 
 // Redirection to api endpoint.
 router.get("/", (req,res) => {
-  res.redirect("./api/parameters");
+  res.status(301).redirect("./api/parameters");
 })
 
 // Page not found after all end points are checked.
